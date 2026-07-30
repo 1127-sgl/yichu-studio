@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=no">
+<title>衣橱女装工作室</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== 左侧导航栏 ===== -->
+<aside id="sidebar" class="sidebar">
+  <div class="sidebar-top">
+    <div class="logo">
+      <div class="logo-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      </div>
+      <div class="logo-text">衣橱<br>工作室</div>
+    </div>
+  </div>
+
+  <nav class="nav-menu">
+    <a class="nav-item active" data-page="dashboard">
+      <div class="nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+      </div>
+      <span>经营首页</span>
+    </a>
+    <a class="nav-item" data-page="purchase">
+      <div class="nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      </div>
+      <span>进货档案</span>
+    </a>
+    <a class="nav-item" data-page="sales">
+      <div class="nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <span>销售台账</span>
+    </a>
+    <a class="nav-item" data-page="inventory">
+      <div class="nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05"/><path d="M12 22.08V12"/></svg>
+      </div>
+      <span>货品库存</span>
+    </a>
+    <a class="nav-item" data-page="analytics">
+      <div class="nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-6"/></svg>
+      </div>
+      <span>数据分析</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <button class="nav-item" id="btnExport" title="导出备份">
+      <div class="nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+      </div>
+      <span>导出备份</span>
+    </button>
+    <label class="nav-item" title="导入恢复">
+      <div class="nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+      </div>
+      <span>导入恢复</span>
+      <input type="file" id="importFile" accept=".json" hidden>
+    </label>
+  </div>
+</aside>
+
+<!-- ===== 主内容区 ===== -->
+<main class="main-content">
+
+  <!-- 顶部栏 -->
+  <header class="topbar">
+    <button class="hamburger" id="hamburger" aria-label="菜单">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="topbar-center">
+      <h1 class="page-title" id="pageTitle">经营首页</h1>
+      <span class="page-subtitle" id="pageSubtitle">今日经营概览</span>
+    </div>
+    <div class="topbar-right">
+      <span class="date-badge" id="dateBadge"></span>
+    </div>
+  </header>
+
+  <!-- 页面容器 -->
+  <div class="page-container">
+
+    <!-- ========== 经营首页 ========== -->
+    <section class="page active" id="page-dashboard">
+      <div class="filter-bar">
+        <div class="filter-group">
+          <button class="filter-btn active" data-range="today">今日</button>
+          <button class="filter-btn" data-range="month">本月</button>
+          <button class="filter-btn" data-range="all">全部</button>
+        </div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card stat-revenue">
+          <div class="stat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+          </div>
+          <div class="stat-body">
+            <span class="stat-label">总营收</span>
+            <span class="stat-value" id="dashRevenue">¥0.00</span>
+            <span class="stat-sub" id="dashRevenueSub">暂无销售记录</span>
+          </div>
+        </div>
+        <div class="stat-card stat-cost">
+          <div class="stat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          </div>
+          <div class="stat-body">
+            <span class="stat-label">进货成本</span>
+            <span class="stat-value" id="dashCost">¥0.00</span>
+            <span class="stat-sub" id="dashCostSub">暂无进货记录</span>
+          </div>
+        </div>
+        <div class="stat-card stat-profit">
+          <div class="stat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg>
+          </div>
+          <div class="stat-body">
+            <span class="stat-label">净利润</span>
+            <span class="stat-value" id="dashProfit">¥0.00</span>
+            <span class="stat-sub" id="dashProfitSub">营收 - 成本</span>
+          </div>
+        </div>
+        <div class="stat-card stat-orders">
+          <div class="stat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 002 1.6h9.7a2 2 0 002-1.6L23 6H6"/></svg>
+          </div>
+          <div class="stat-body">
+            <span class="stat-label">订单数</span>
+            <span class="stat-value" id="dashOrders">0</span>
+            <span class="stat-sub" id="dashOrdersSub">笔成交</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px;"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/></svg>
+            各平台营收对比
+          </h3>
+        </div>
+        <div class="card-body" id="platformChart">
+          <div class="empty-state">暂无数据</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px;"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18"/></svg>
+            最近进货
+          </h3>
+          <a class="link-more" data-nav="purchase">查看全部 →</a>
+        </div>
+        <div class="card-body" id="recentPurchase">
+          <div class="empty-state">暂无进货记录</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px;"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+            最近销售
+          </h3>
+          <a class="link-more" data-nav="sales">查看全部 →</a>
+        </div>
+        <div class="card-body" id="recentSales">
+          <div class="empty-state">暂无销售记录</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px;"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            库存预警
+          </h3>
+          <a class="link-more" data-nav="inventory">管理库存 →</a>
+        </div>
+        <div class="card-body" id="stockAlert">
+          <div class="empty-state">暂无库存数据</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 进货档案 ========== -->
+    <section class="page" id="page-purchase">
+      <div class="toolbar">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchPurchase" placeholder="搜索款式或档口...">
+        </div>
+        <button class="btn-primary" id="btnAddProduct">
+          <span>＋ 新增货品</span>
+        </button>
+      </div>
+      <div class="product-grid" id="productGrid"></div>
+    </section>
+
+    <!-- ========== 多平台销售台账 ========== -->
+    <section class="page" id="page-sales">
+      <div class="toolbar">
+        <div class="filter-group">
+          <button class="filter-btn active" data-platform="all">全部</button>
+          <button class="filter-btn" data-platform="拼多多">拼多多</button>
+          <button class="filter-btn" data-platform="抖音">抖音</button>
+          <button class="filter-btn" data-platform="淘宝">淘宝</button>
+          <button class="filter-btn" data-platform="其他">其他</button>
+        </div>
+        <button class="btn-primary" id="btnAddSale">
+          <span>＋ 新增销售</span>
+        </button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="salesTable">
+          <thead><tr><th>日期</th><th>平台</th><th>货品</th><th>售价</th><th>数量</th><th>金额</th><th>毛利</th><th>操作</th></tr></thead>
+          <tbody id="salesTbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ========== 货品库存 ========== -->
+    <section class="page" id="page-inventory">
+      <div class="toolbar">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchInventory" placeholder="搜索款式...">
+        </div>
+        <div class="filter-group">
+          <button class="filter-btn active" data-stock="all">全部</button>
+          <button class="filter-btn" data-stock="in">有库存</button>
+          <button class="filter-btn" data-stock="low">不足</button>
+          <button class="filter-btn" data-stock="out">缺货</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="inventoryTable">
+          <thead><tr><th>图</th><th>款式</th><th>成本</th><th>拿货</th><th>已售</th><th>库存</th><th>状态</th></tr></thead>
+          <tbody id="inventoryTbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ========== 经营数据分析 ========== -->
+    <section class="page" id="page-analytics">
+      <div class="filter-bar">
+        <div class="filter-group">
+          <button class="filter-btn active" data-range="today">今日</button>
+          <button class="filter-btn" data-range="month">本月</button>
+          <button class="filter-btn" data-range="all">全部</button>
+        </div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card stat-revenue">
+          <div class="stat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+          </div>
+          <div class="stat-body">
+            <span class="stat-label">总营收</span>
+            <span class="stat-value" id="anaRevenue">¥0.00</span>
+          </div>
+        </div>
+        <div class="stat-card stat-cost">
+          <div class="stat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          </div>
+          <div class="stat-body">
+            <span class="stat-label">总成本</span>
+            <span class="stat-value" id="anaCost">¥0.00</span>
+          </div>
+        </div>
+        <div class="stat-card stat-profit">
+          <div class="stat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg>
+          </div>
+          <div class="stat-body">
+            <span class="stat-label">毛利润</span>
+            <span class="stat-value" id="anaProfit">¥0.00</span>
+          </div>
+        </div>
+        <div class="stat-card stat-orders">
+          <div class="stat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+          </div>
+          <div class="stat-body">
+            <span class="stat-label">利润率</span>
+            <span class="stat-value" id="anaMargin">0%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3>📊 各平台营收 & 利润对比</h3></div>
+        <div class="card-body" id="anaPlatformChart"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3>📋 各平台销售明细</h3></div>
+        <div class="card-body" id="anaPlatformTable"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3>🏆 单品利润排行 TOP 10</h3></div>
+        <div class="card-body" id="anaProductRank"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3>📈 每日销售趋势</h3></div>
+        <div class="card-body" id="anaTrendChart"></div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<!-- ===== 新增/编辑货品 弹窗 ===== -->
+<div class="modal" id="modalProduct">
+  <div class="modal-backdrop"></div>
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 id="modalProductTitle">新增货品</h3>
+      <button class="modal-close" data-close>✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="formProduct">
+        <input type="hidden" id="productId">
+        <div class="form-group">
+          <label>货品实拍图片</label>
+          <div class="image-upload" id="imageUpload">
+            <div class="image-preview" id="imagePreview">
+              <span class="upload-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              </span>
+              <span>点击上传图片</span>
+            </div>
+            <input type="file" id="productImage" accept="image/*" hidden>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>款式名称 <span class="req">*</span></label>
+            <input type="text" id="productName" placeholder="如：法式碎花连衣裙" required>
+          </div>
+          <div class="form-group">
+            <label>拿货价（元）<span class="req">*</span></label>
+            <input type="number" id="productCost" step="0.01" min="0" placeholder="0.00" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>发货运费（元）</label>
+            <input type="number" id="productFreight" step="0.01" min="0" value="0" placeholder="0.00">
+          </div>
+          <div class="form-group">
+            <label>拿货数量 <span class="req">*</span></label>
+            <input type="number" id="productQty" min="1" value="1" placeholder="1" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>拿货时间 <span class="req">*</span></label>
+            <input type="date" id="productDate" required>
+          </div>
+          <div class="form-group">
+            <label>拿货档口</label>
+            <input type="text" id="productStall" placeholder="如：广州十三行A12">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>备注</label>
+          <textarea id="productNote" rows="2" placeholder="颜色、尺码、面料等补充信息"></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" data-close>取消</button>
+      <button class="btn-primary" id="btnSaveProduct">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 新增销售 弹窗 ===== -->
+<div class="modal" id="modalSale">
+  <div class="modal-backdrop"></div>
+  <div class="modal-dialog modal-sm">
+    <div class="modal-header">
+      <h3>新增销售记录</h3>
+      <button class="modal-close" data-close>✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="formSale">
+        <input type="hidden" id="saleId">
+        <div class="form-group">
+          <label>销售平台 <span class="req">*</span></label>
+          <select id="salePlatform" required>
+            <option value="拼多多">拼多多</option>
+            <option value="抖音">抖音</option>
+            <option value="淘宝">淘宝</option>
+            <option value="其他">其他</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>选择货品 <span class="req">*</span></label>
+          <select id="saleProduct" required>
+            <option value="">请选择货品</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>售价（元/件）<span class="req">*</span></label>
+            <input type="number" id="salePrice" step="0.01" min="0" placeholder="0.00" required>
+          </div>
+          <div class="form-group">
+            <label>销售数量 <span class="req">*</span></label>
+            <input type="number" id="saleQty" min="1" value="1" placeholder="1" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>销售日期 <span class="req">*</span></label>
+          <input type="date" id="saleDate" required>
+        </div>
+        <div class="form-group">
+          <label>备注</label>
+          <input type="text" id="saleNote" placeholder="订单号等">
+        </div>
+        <div class="profit-preview" id="profitPreview" style="display:none;">
+          <div class="profit-row"><span>单件成本</span><span id="ppCost">¥0.00</span></div>
+          <div class="profit-row"><span>单件毛利</span><span id="ppUnitProfit" class="text-green">¥0.00</span></div>
+          <div class="profit-row"><span>总毛利</span><span id="ppTotalProfit" class="text-green">¥0.00</span></div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" data-close>取消</button>
+      <button class="btn-primary" id="btnSaveSale">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Toast 提示 ===== -->
+<div class="toast" id="toast"></div>
+
+<!-- ===== 确认弹窗 ===== -->
+<div class="modal" id="modalConfirm">
+  <div class="modal-backdrop"></div>
+  <div class="modal-dialog modal-xs">
+    <div class="modal-header">
+      <h3 id="confirmTitle">确认操作</h3>
+    </div>
+    <div class="modal-body">
+      <p id="confirmMsg" style="margin:0;color:var(--text-secondary);"></p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" data-close>取消</button>
+      <button class="btn-danger" id="btnConfirmOk">确认</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 移动端遮罩 ===== -->
+<div id="overlay" class="overlay"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
